@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Thymeleaf Snippet</title>
+</head>
+<body>
+
+参考：<a href="http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf_ja.html">Tutorial: Using Thymeleaf (ja)</a>
+
+<h1>属性値の置換</h1><!-- ========================================================================================== -->
+
+<ol>
+    <li>XML式の属性</li>
+    <li>HTML5式の属性</li>
+
+    <li>&lt;span&gt;text&lt;/span&gt;</li>
+    <li><span>text</span></li>
+
+    <li><a href="thymeleaf" target="_blank">属性の値を置き換える</a></li>
+    <li><a href="thymeleaf" target="_blank">属性の値を置き換える</a></li>
+</ol>
+
+置き換え可能な属性の一覧
+
+<pre>
+    abbr  accept-charset  accept  accesskey  action  align  alt  archive  audio  autocomplete  axis
+    background  bgcolor  border
+    cellpadding  cellspacing  challenge  charset  cite  class  classid  codebase  codetype  cols  colspan  compact  content  contenteditable  contextmenu
+    data  datetime  dir  draggable  dropzone
+    enctype
+    for  form  formaction  formenctype  formmethod  formtarget  frame  frameborder
+    headers  height  high  href  hreflang  hspace  http-equiv
+    icon  id
+    keytype  kind
+    label  lang  list  longdesc  low
+    manifest  marginheight  marginwidth  max  maxlength  media  method  min
+    name
+    optimum
+    pattern  placeholder  poster  preload
+    radiogroup  rel  rev  rows  rowspan  rules
+    sandbox  scheme  scope  scrolling  size  sizes  span  spellcheck  src  srclang  standby  start  step  style  summary
+    tabindex  target  title  type
+    usemap
+    value  valuetype  vspace
+    width  wrap
+    xmlbase  xmllang  xmlspace
+</pre>
+
+<h2>固定値ブール属性</h2>
+
+<input type="checkbox" checked="checked" />
+<input type="checkbox" />
+
+固定値ブール属性の一覧
+<pre>
+    async  autofocus  autoplay
+    checked  controls
+    declare  default  defer  disabled
+    formnovalidate
+    hidden
+    ismap
+    loop
+    multiple
+    novalidate  nowrap
+    open
+    pubdate
+    readonly  required  reversed
+    scoped  seamless  selected
+</pre>
+
+<h2>特殊な属性</h2>
+
+<ol>
+    <li><a alt="text" title="text">altとtitleをまとめて置き換える</a></li>
+    <li><a lang="ja" xml:lang="ja">langとxmllangをまとめて置き換える</a></li>
+    <li class="error btn btn-primary">属性値の前後に追加する</li>
+    <li class="btn btn-primary btn-block">class属性に追加する</li>
+    <li style="color: gray; background-color: black; font-size: small;">style属性に追加する</li>
+</ol>
+
+<h1>属性値（式）</h1><!-- ========================================================================================== -->
+
+<h2>リテラル</h2>
+
+<ol>
+    <li>&quot;I can&#39;t fly&quot;</li>
+    <li>azAZ09[].-_あ</li>
+    <li>2016</li>
+    <li>true</li>
+    <li>false</li>
+    <li></li>
+</ol>
+
+<h2>変数式</h2>
+
+<ol>
+    <li>Tokyo</li>
+    <li>Tokyo</li>
+    <li>0</li>
+    <li>Japanese</li>
+    <li>Japanese</li>
+    <li>false</li>
+    
+</ol>
+
+<h2>選択変数式（アスタリスク構文）</h2>
+
+<ol>
+    <li>Tokyo</li>
+    <li>Tokyo</li>
+</ol>
+<ol>
+    <li>Taro</li>
+</ol>
+
+<h2>メッセージ式</h2>
+
+<ol>
+    <li>??string.nothing_ja_JP??</li>
+    <li>こんにちは</li>
+    <li>See you</li>
+    <li>ようこそ、Taro</li>
+    <li>ようこそ、Taro</li>
+</ol>
+
+<h2>リンクURL式</h2>
+
+<a href="https://www.google.co.jp/">絶対URL</a>
+<a href="//www.google.co.jp">プロトコル相対URL</a>
+<a href="/thymeleaf">サーバー相対URL</a>
+<a href="/thymeleaf">コンテキスト相対URL</a>
+<a href="thymeleaf">ページ相対URL</a>
+<a href="thymeleaf?q=thymeleaf&amp;start=10">パラメータ</a>
+<a href="thymeleaf">リンクURL式中で変数式を使う</a>
+
+<h2>テキスト演算子</h2>
+
+<ol>
+    <li>Text:Hello</li>
+    <li>Literal:azAZ09[].-_あ</li>
+    <li>Number:2016</li>
+    <li>Variable:thymeleaf</li>
+    <li>Variable:thymeleaf</li>
+</ol>
+
+<h2>算術演算子</h2>
+
+<ol>
+    <li>5</li>
+    <li>-1</li>
+    <li>6</li>
+    <li>0.6666666667</li>
+    <li>2</li>
+    <li>0.6666666667</li>
+    <li>2</li>
+</ol>
+
+<h2>比較演算子と等価演算子</h2>
+
+<ol>
+    <li>true</li>
+    <li>false</li>
+    <li>false</li>
+    <li>false</li>
+    <li>true</li>
+    <li>true</li>
+    <li>true</li>
+    <li>false</li>
+    <li>false</li>
+    <li>false</li>
+    <li>false</li>
+</ol>
+
+<h2>条件式</h2>
+
+<ol>
+    <li>success</li>
+    <li>failure</li>
+    <li>success</li>
+    <li></li>
+</ol>
+
+<h2>デフォルト式（エルビス演算子）</h2>
+
+<ol>
+    <li>2016</li>
+    <li>0</li>
+</ol>
+
+<h2>プリプロセッシング</h2>
+
+<ol>
+    <li>20</li>
+    <li>Taro</li>
+</ol>
+
+<h2>評価エンジン</h2>
+
+<ol>
+    <li>true</li>
+    <li>true</li>
+</ol>
+
+<h2>ローカル変数</h2>
+
+<div>
+    <span>thymeleaf Taro</span>
+</div>
+
+<h1>繰り返し</h1><!-- ========================================================================================== -->
+
+<table>
+    <tr>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>1</td>
+    </tr>
+</table>
+
+<ul>
+    <li>jp : Japanese</li>
+    <li>en : English</li>
+    <li>Taro</li>
+</ul>
+
+<h2>ステータス変数</h2>
+
+<table>
+    <tr>
+        <td>0</td>
+        <td>1</td>
+        <td>3</td>
+        <td>0</td>
+        <td>true</td>
+        <td>false</td>
+        <td>true</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>2</td>
+        <td>false</td>
+        <td>true</td>
+        <td>false</td>
+        <td>false</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>3</td>
+        <td>3</td>
+        <td>1</td>
+        <td>true</td>
+        <td>false</td>
+        <td>false</td>
+        <td>true</td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <td>0</td>
+    </tr>
+    <tr>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>2</td>
+    </tr>
+</table>
+
+<h1>条件分岐</h1><!-- ========================================================================================== -->
+
+<ol>
+    <li>表示される</li>
+    
+    
+    
+    
+    
+    
+</ol>
+
+<ol>
+    
+    <li>表示される</li>
+</ol>
+
+<ol>
+    
+    <li>表示される</li>
+    
+</ol>
+
+<h1>フラグメントのインクルード</h1><!-- ========================================================================================== -->
+
+<div>Thymeleaf Snippet</div>
+<div>
+    Footer
+</div>
+
+<div>
+    <span>1 include</span>
+</div>
+<footer>
+    <span>2 replace</span>
+</footer>
+
+<div>
+    <span>3 include</span>
+</div>
+<div>
+    <span>4 include</span>
+</div>
+<div>
+    <span>5 include</span>
+</div>
+
+<div>
+    <span>タグを除去</span>
+</div>
+
+    <span>タグを除去</span>
+
+
+<h1>フラグメントの削除</h1><!-- ========================================================================================== -->
+
+<ul>
+    <li>Item <code>1</code> 残る</li>
+    
+    
+</ul>
+
+<ul>
+    <li>Item <code>4</code> 残る</li>
+    <li>Item <code>5</code> 残る</li>
+    <li></li>
+    
+</ul>
+
+Item <code>8</code> タグが削除される
+
+<h1>コメント</h1><!-- ========================================================================================== -->
+
+<!-- HTMLのコメント -->
+
+
+ 静的に表示する場合はコメント、テンプレートとして実行された時は表示される 
+
+<table>
+      
+    <tr><td>jp</td></tr>
+    <tr><td>Japanese</td></tr>
+     
+      
+    <tr><td>en</td></tr>
+    <tr><td>English</td></tr>
+      
+</table>
+
+<h1>インライン</h1><!-- ========================================================================================== -->
+
+<div>
+    <span>thymeleaf</span>
+</div>
+
+<script>
+    var a = 'Taro';
+    var b = [0,2,1];
+    var c = {'jp':'Japanese','en':'English'};
+    
+    var d = '静的に表示する場合はコメント、テンプレートとして実行した時は有効になる';
+    
+    
+</script>
+
+<h1>ユーティリティオブジェクト</h1><!-- ========================================================================================== -->
+
+<h3>#messages (org.thymeleaf.expression.Messages)</h3>
+
+<ol>
+    <li></li>
+    <li>こんにちは</li>
+    <li>ようこそ、Taro</li>
+    <li>Taro and Jiro</li>
+    <li>Taro, Jiro and Saburo</li>
+    <li>Taro, Joro, Saburo and Shiro</li>
+    <li>msgOrNullと同様のarrayMsgOrNull,listMegOrNull,setMsgOrNullを使うことができる</li>
+    <li>上記の全てにおいて、OrNullを取り除いたメソッドが存在する（メッセージ式と同等のため省略）</li>
+</ol>
+
+<h3>#ids (org.thymeleaf.expression.Ids)</h3>
+
+<table>
+    <tr>
+        <td>no-1</td>
+        <td>no-1</td>
+        <td>no-2</td>
+    </tr>
+    <tr>
+        <td>no-2</td>
+        <td>no-2</td>
+        <td>no-3</td>
+    </tr>
+</table>
+
+<h3>#dates (org.thymeleaf.expression.Dates)</h3>
+
+<ol>
+    <li>2016/12/06 0:03:12 JST</li>
+    <li>2016-12-06T00:03:12.125+09:00</li>
+    <li>2016/12/06 00:03:12.002</li>
+    <li>2016</li>
+    <li>12</li>
+    <li>12月</li>
+    <li>12</li>
+    <li>6</li>
+    <li>3</li>
+    <li>火曜日</li>
+    <li>火</li>
+    <li>0</li>
+    <li>3</li>
+    <li>12</li>
+    <li>125</li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayFormat, listFormat, setFormat) を使うことができる</li>
+</ol>
+
+<ol>
+    <li>2016/12/06 0:00:00 JST</li>
+    <li>2016/09/06 0:00:00 JST</li>
+    <li>2016/09/06 9:06:00 JST</li>
+    <li>2016/09/06 9:06:29 JST</li>
+    <li>2016/09/06 9:06:29 JST</li>
+</ol>
+
+<h3>#calendars (org.thymeleaf.expression.Calendars)</h3>
+
+<ol>
+    <li>2016/12/06 0:03:12 JST</li>
+    <li>2016-12-06T00:03:12.128+09:00</li>
+    <li>2016/12/06 00:03:12.002</li>
+    <li>2016</li>
+    <li>12</li>
+    <li>12月</li>
+    <li>12</li>
+    <li>6</li>
+    <li>3</li>
+    <li>火曜日</li>
+    <li>火</li>
+    <li>0</li>
+    <li>3</li>
+    <li>12</li>
+    <li>128</li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayFormat, listFormat, setFormat) を使うことができる</li>
+</ol>
+
+<ol>
+    <li>2016/12/06 0:00:00 JST</li>
+    <li>2016/09/06 0:00:00 JST</li>
+    <li>2016/09/06 9:06:00 JST</li>
+    <li>2016/09/06 9:06:29 JST</li>
+    <li>2016/09/06 9:06:29 JST</li>
+</ol>
+
+<h3>#numbers (org.thymeleaf.expression.Numbers)</h3>
+
+<ol>
+    <li>0000003</li>
+    <li>0.000.003</li>
+    <li>0,000,003</li>
+    <li>0 000 003</li>
+    <li>0000003</li>
+    <li>0,000,003</li>
+    <li>上記の全てにおいて、arrayFormatInteger, listFormatInteger, setFormatInteger を使うことができる</li>
+</ol>
+
+<ol>
+    <li>0000003.14</li>
+    <li>0000003.14</li>
+    <li>0,000,003.14</li>
+    <li>上記の全てにおいて、arrayFormatDecimal, listFormatDecimal, setFormatDecimal を使うことができる</li>
+</ol>
+
+<ol>
+    <li>3.1</li>
+    <li>3.1</li>
+    <li>3.2</li>
+    <li><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></li>
+    <li><span>1</span><span>3</span><span>5</span><span>7</span><span>9</span></li>
+</ol>
+
+<h3>#strings (org.thymeleaf.expression.Strings)</h3>
+
+<ol>
+    <li>true</li>
+    <li>true</li>
+    <li>true</li>
+    <li>default</li>
+    <li>true</li>
+    <li>leaf</li>
+    <li>Thyme</li>
+    <li>Thyme...</li>
+    <li>ThymeLeaf</li>
+    <li>thymeLeaf</li>
+    <li>I Can Fly</li>
+    <li>CapiTaliZe</li>
+    <li>&amp;lt;span&amp;gt;text&amp;lt;/span&amp;gt;</li>
+    <li>if (i &gt; 0) { System.out.print(\&quot;Hello\\n\&quot;); }</li>
+    <li>if (i &gt; 0) { System.out.print(&quot;Hello\n&quot;); }</li>
+    <li>if (i &gt; 0) { console.log(\&quot;Hello\\n\&quot;); }</li>
+    <li>if (i &gt; 0) { console.log(&quot;Hello\n&quot;); }</li>
+    <li>${#strings.method(string,...)} に対応する ${string.method(...)} があるため省略 : <br />
+        toString(String), contains(String,String), startsWith(String,String), indexOf(String,String),
+        substring(String,Int,Int), replace(String,String,String), prepend(String,String), append(String,String),
+        toUpperCase(String), toLowerCase(String), trim(String), length(String)
+    </li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayIsEmpty, listIsEmpty, setIsEmpty) を使うことができる</li>
+</ol>
+
+<ol>
+    <li>false</li>
+    <li>true</li>
+    <li>Hello Thymeleaf World</li>
+    <li>12oh!45oh!</li>
+    <li>NUPS7GSP</li>
+    <li><span>1</span><span>2</span><span>1</span><span>2</span></li>
+    <li><span>3</span><span>4</span><span>3</span><span>4</span></li>
+    <li><span>5</span><span>6</span></li>
+    <li>1|2|1|2</li>
+    <li>3|4|3|4</li>
+    <li>5|6</li>
+</ol>
+
+<h3>#bools</h3>
+
+<ol>
+    <li>false</li>
+    <li>true</li>
+</ol>
+
+<ol>
+    <li>true</li>
+    <li>false</li>
+    <li>false</li>
+    <li>false</li>
+    <li>true</li>
+    <li>true</li>
+    <li>上記の全てにおいて、array*, list*, set* を使うことができる</li>
+    <li>true/false の評価基準は条件分岐を参照</li>
+</ol>
+
+<h3>#arrays, #lists, #sets, #maps</h3>
+
+<ol>
+    <li>0</li>
+    <li>1</li>
+    <li>2</li>
+    <li>2</li>
+    <li>1</li>
+    <li>0</li>
+</ol>
+
+<ol>
+    <li>#arrays.length, #lists.size, #sets.size, #maps.size</li>
+    <li>#arrays.isEmpty, #lists.isEmpty, #sets.isEmpty, #maps.isEmpty</li>
+    <li>#arrays.contains, #lists.contains, #sets.contains, #maps.containsKey, #maps.containsValue</li>
+    <li>#arrays.containsAll, #lists.containsAll, #sets.containsAll, #maps.containsAllKeys, #maps.containsAllValues</li>
+</ol>
+
+<ol>
+    <li>#arrays : toArray, toStringArray, toIntegerArray, toLongArray, toDoubleArray, toFloatArray, toBooleanArray</li>
+    <li>#lists : toList</li>
+    <li>#sets : toSet</li>
+</ol>
+
+<h3>#aggregates (org.thymeleaf.expression.Aggregates)</h3>
+
+<ol>
+    <li>3</li>
+    <li>1</li>
+</ol>
+
+<h3>#objects (org.thymeleaf.expression.Objects)</h3>
+
+<ol>
+    <li>2016</li>
+    <li>0</li>
+    <li>各要素に nullSafe を適用する arrayNullSafe, listNullSafe, setNullSafe を使うことができる</li>
+</ol>
+
+<h1>優先順位</h1><!-- ========================================================================================== -->
+
+<table>
+    <tr>
+        <th>順番</th>
+        <th>機能</th>
+        <th>属性</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>フラグメントのインクルード</td>
+        <td><code>include</code>, <code>replace</code></td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>フラグメントの繰り返し</td>
+        <td><code>each</code></td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>条件の評価</td>
+        <td><code>if</code>, <code>unless</code>, <code>switch</code>, <code>case</code></td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>ローカル変数の定義</td>
+        <td><code>object</code>, <code>with</code></td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>一般的な属性の変更</td>
+        <td><code>attr</code>, <code>attrprepend</code>, <code>attrappend</code></td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>特定の属性の変更</td>
+        <td><code>value</code>, <code>href</code>, <code>src</code>, ...</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>タグボディの変更</td>
+        <td><code>text</code>, <code>utext</code></td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>フラグメントの定義</td>
+        <td><code>fragment</code></td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>フラグメントの削除</td>
+        <td><code>remove</code></td>
+    </tr>
+</table>
+
+</body>
+</html>
