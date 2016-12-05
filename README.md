@@ -2,6 +2,10 @@
 
 Thymeleaf Snippet です。コメントは日本語で記載されています。
 
+[Tutorial: Using Thymeleaf (ja)](http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf_ja.html) の内容を網羅するように作成されています。(Appendix A,C の内容は含まれていません。力尽きました。)
+
+上記 Tutorial は Thymeleaf 2.x です。3.x で追加された内容は含まれていません。(3.x も調べて追加したい。)
+
 ## 使い方
 
 1. テストプログラムを実行します。
