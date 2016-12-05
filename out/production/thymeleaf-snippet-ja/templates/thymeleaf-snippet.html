@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thymeleaf Snippet</title>
+</head>
+<body>
+
+参考：<a href="http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf_ja.html">Tutorial: Using Thymeleaf (ja)</a>
+
+<h1>属性値の置換</h1><!-- ========================================================================================== -->
+
+<ol>
+    <li th:text="XML式の属性"><code>th:</code>を付与した属性は置換される(以降はこの記法を例として使う)</li>
+    <li data-th-text="HTML5式の属性"><code>data-th-</code>を付与した属性は置換される</li>
+
+    <li th:text="${tag}">テキストを置き換える（エスケープあり）</li>
+    <li th:utext="${tag}">テキストを置き換える（エスケープなし）</li>
+
+    <li><a href="thymeleaf-snippet.html" th:attr="href=thymeleaf,target=_blank">属性の値を置き換える</a></li>
+    <li><a href="thymeleaf-snippet.html" th:href="thymeleaf" th:target="_blank">属性の値を置き換える</a></li>
+</ol>
+
+置き換え可能な属性の一覧
+
+<pre>
+    abbr  accept-charset  accept  accesskey  action  align  alt  archive  audio  autocomplete  axis
+    background  bgcolor  border
+    cellpadding  cellspacing  challenge  charset  cite  class  classid  codebase  codetype  cols  colspan  compact  content  contenteditable  contextmenu
+    data  datetime  dir  draggable  dropzone
+    enctype
+    for  form  formaction  formenctype  formmethod  formtarget  frame  frameborder
+    headers  height  high  href  hreflang  hspace  http-equiv
+    icon  id
+    keytype  kind
+    label  lang  list  longdesc  low
+    manifest  marginheight  marginwidth  max  maxlength  media  method  min
+    name
+    optimum
+    pattern  placeholder  poster  preload
+    radiogroup  rel  rev  rows  rowspan  rules
+    sandbox  scheme  scope  scrolling  size  sizes  span  spellcheck  src  srclang  standby  start  step  style  summary
+    tabindex  target  title  type
+    usemap
+    value  valuetype  vspace
+    width  wrap
+    xmlbase  xmllang  xmlspace
+</pre>
+
+<h2>固定値ブール属性</h2>
+
+<input type="checkbox" th:checked="true"/>
+<input type="checkbox" th:checked="false"/>
+
+固定値ブール属性の一覧
+<pre>
+    async  autofocus  autoplay
+    checked  controls
+    declare  default  defer  disabled
+    formnovalidate
+    hidden
+    ismap
+    loop
+    multiple
+    novalidate  nowrap
+    open
+    pubdate
+    readonly  required  reversed
+    scoped  seamless  selected
+</pre>
+
+<h2>特殊な属性</h2>
+
+<ol>
+    <li><a th:alt-title="text">altとtitleをまとめて置き換える</a></li>
+    <li><a th:lang-xmllang="ja">langとxmllangをまとめて置き換える</a></li>
+    <li class="btn" th:attrappend="class=' btn-primary'" th:attrprepend="class='error '">属性値の前後に追加する</li>
+    <li class="btn" th:classappend="'btn-primary btn-block'">class属性に追加する</li>
+    <li style="color: gray;" th:styleappend="'background-color: black; font-size: small;'">style属性に追加する</li>
+</ol>
+
+<h1>属性値（式）</h1><!-- ========================================================================================== -->
+
+<h2>リテラル</h2>
+
+<ol>
+    <li th:text="'&quot;I can\'t fly&quot;'">テキストリテラル</li>
+    <li th:text="azAZ09[].-_あ">リテラルトークン</li>
+    <li th:text="2016">数値リテラル</li>
+    <li th:text="true">真値リテラル</li>
+    <li th:text="false">偽値リテラル</li>
+    <li th:text="null">nullリテラル</li>
+</ol>
+
+<h2>変数式</h2>
+
+<ol>
+    <li th:text="${user.address.city}">プロパティ</li>
+    <li th:text="${user['address']['city']}">プロパティ</li>
+    <li th:text="${list[0]}">リストの要素</li>
+    <li th:text="${map.jp}">マップの要素</li>
+    <li th:text="${map['jp']}">マップの要素</li>
+    <li th:text="${list.contains(4)}">メソッド呼び出し</li>
+    <!--/* <li th:text="${user.isEnabled}">isXxxはエラーになる</li> */-->
+    <li th:text="${user.isEnabled}">isXxxはエラーになる</li>
+</ol>
+
+<h2>選択変数式（アスタリスク構文）</h2>
+
+<ol th:object="${user}">
+    <li th:text="*{address.city}">object属性で指定したオブジェクトのプロパティ</li>
+    <li th:text="${#object.address.city}">object属性で指定したオブジェクトの参照</li>
+</ol>
+<ol>
+    <li th:text="*{user.name}">object属性を指定していない場合の*は$と同じ</li>
+</ol>
+
+<h2>メッセージ式</h2>
+
+<ol>
+    <li th:text="#{string.nothing}">メッセージが見つからない場合</li>
+    <li th:text="#{string.hello}">jp用のpropertiesがある場合</li>
+    <li th:text="#{string.bye}">jp用のpropertiesがない場合</li>
+    <li th:text="#{string.welcome(${user.name})}">パラメータ付きのメッセージ</li>
+    <li th:text="#{${messageKey}(${user.name})}">メッセージキーを変数から取得</li>
+</ol>
+
+<h2>リンクURL式</h2>
+
+<a href="thymeleaf-snippet.html" th:href="@{https://www.google.co.jp/}">絶対URL</a>
+<a href="thymeleaf-snippet.html" th:href="@{//www.google.co.jp}">プロトコル相対URL</a>
+<a href="thymeleaf-snippet.html" th:href="@{~/thymeleaf}">サーバー相対URL</a>
+<a href="thymeleaf-snippet.html" th:href="@{/thymeleaf}">コンテキスト相対URL</a>
+<a href="thymeleaf-snippet.html" th:href="@{thymeleaf}">ページ相対URL</a>
+<a href="thymeleaf-snippet.html" th:href="@{thymeleaf(q=${keyword},start=10)}">パラメータ</a>
+<a href="thymeleaf-snippet.html" th:href="@{${keyword}}">リンクURL式中で変数式を使う</a>
+
+<h2>テキスト演算子</h2>
+
+<ol>
+    <li th:text="'Text:' + 'Hello'">テキスト + テキスト</li>
+    <li th:text="'Literal:' + azAZ09[].-_あ">テキスト + リテラルトークン</li>
+    <li th:text="'Number:' + 2016">テキスト + 数値</li>
+    <li th:text="'Variable:' + ${keyword}">テキスト + 変数</li>
+    <li th:text="|Variable:${keyword}|">リテラル置換</li>
+</ol>
+
+<h2>算術演算子</h2>
+
+<ol>
+    <li th:text="2 + 3">+</li>
+    <li th:text="2 - 3">-</li>
+    <li th:text="2 * 3">*</li>
+    <li th:text="2 / 3">/</li>
+    <li th:text="2 % 3">%</li>
+    <li th:text="2 div 3">div</li>
+    <li th:text="2 mod 3">mod</li>
+</ol>
+
+<h2>比較演算子と等価演算子</h2>
+
+<ol>
+    <li th:text="2 == 2">==</li>
+    <li th:text="2 != 2">!=</li>
+    <li th:text="2 gt 2">&gt; (greater than)</li>
+    <li th:text="2 lt 2">&lt; (less than)</li>
+    <li th:text="2 ge 2">&gt;= (greater than equals)</li>
+    <li th:text="2 le 2">&lt;= (less than equals)</li>
+    <li th:text="2 eq 2">== (equals)</li>
+    <li th:text="2 ne 2">!= (not equals)</li>
+    <li th:text="2 neq 2">!= (not equals)</li>
+    <li th:text="!true">not</li>
+    <li th:text="'text' == null">nullとの比較</li>
+</ol>
+
+<h2>条件式</h2>
+
+<ol>
+    <li th:text="true? 'success' : 'failure'">条件式</li>
+    <li th:text="false? 'success' : 'failure'">条件式</li>
+    <li th:text="true? 'success'">条件式 (falseの場合はnull)</li>
+    <li th:text="false? 'success'">条件式 (falseの場合はnull)</li>
+</ol>
+
+<h2>デフォルト式（エルビス演算子）</h2>
+
+<ol>
+    <li th:text="2016?: 0">null以外の場合は値を使用</li>
+    <li th:text="null?: 0">nullの場合はデフォルト値を使用</li>
+</ol>
+
+<h2>プリプロセッシング</h2>
+
+<ol>
+    <li th:text="${user.__${property}__}">変数式で指定されたプロパティを参照</li>
+    <li th:text="${user.__#{string.property}__}">メッセージ式で指定されたプロパティを参照</li>
+</ol>
+
+<h2>評価エンジン</h2>
+
+<ol>
+    <li th:text="${user.name} == 'Taro'">Thymeleafで評価</li>
+    <li th:text="${user.name == 'Taro'}">SpELで評価(非SpringではOGNLで評価)</li>
+</ol>
+
+<h2>ローカル変数</h2>
+
+<div th:with="n=${user.name},k=${keyword}">
+    <span th:text="|${k} ${n}|"></span>
+</div>
+
+<h1>繰り返し</h1><!-- ========================================================================================== -->
+
+<table>
+    <tr th:each="value : ${list}">
+        <td th:text="${value}">java.util.Iterableの繰り返し</td>
+    </tr>
+</table>
+
+<ul>
+    <li th:each="entry : ${map}" th:text="|${entry.key} : ${entry.value}|">java.util.Mapの繰り返し</li>
+    <li th:each="u : ${user}" th:text="${u.name}">繰り返し不可能なオブジェクトでの繰り返し</li>
+</ul>
+
+<h2>ステータス変数</h2>
+
+<table>
+    <tr th:each="value : ${list}">
+        <td th:text="${valueStat.index}">0 始まりのインデックス</td>
+        <td th:text="${valueStat.count}">1 始まりのインデックス</td>
+        <td th:text="${valueStat.size}">要素数</td>
+        <td th:text="${valueStat.current}">繰り返し変数</td>
+        <td th:text="${valueStat.even}">偶数か？</td>
+        <td th:text="${valueStat.odd}">奇数か？</td>
+        <td th:text="${valueStat.first}">最初か？</td>
+        <td th:text="${valueStat.last}">最後か？</td>
+    </tr>
+</table>
+
+<table>
+    <tr th:each="value,stat : ${list}">
+        <td th:text="${stat.index}">ステータス変数名の指定</td>
+    </tr>
+</table>
+
+<h1>条件分岐</h1><!-- ========================================================================================== -->
+
+<ol>
+    <li th:if="true" th:text="表示される">if true</li>
+    <li th:if="false" th:text="表示されない">if false</li>
+    <li th:if="null" th:text="表示されない">if false</li>
+    <li th:if="'false'" th:text="表示されない">if false</li>
+    <li th:if="'off'" th:text="表示されない">if false</li>
+    <li th:if="'no'" th:text="表示されない">if false</li>
+    <li th:if="0" th:text="表示されない">if false</li>
+</ol>
+
+<ol>
+    <li th:unless="true" th:text="表示されない">unless true</li>
+    <li th:unless="false" th:text="表示される">unless false</li>
+</ol>
+
+<ol th:switch="1">
+    <li th:case="0" th:text="表示されない">switch == 0 の場合</li>
+    <li th:case="1" th:text="表示される">switch == 1 の場合</li>
+    <li th:case="*" th:text="表示されない">switch == その他の場合</li>
+</ol>
+
+<h1>フラグメントのインクルード</h1><!-- ========================================================================================== -->
+
+<div th:include="::title">同一テンプレート内のフラグメント（DOMセレクター構文 - タグ指定）</div>
+<div th:include="thymeleaf-fragment::#footer">他テンプレート内のフラグメント（DOMセレクター構文 - id指定）</div>
+
+<div th:include="thymeleaf-fragment::frag1(1,'include')">パラメータ付きinclude</div>
+<div th:replace="thymeleaf-fragment::frag1(2,'replace')">パラメータ付きreplace</div>
+
+<div th:include="thymeleaf-fragment::frag1(message='include',id=3)">パラメータ名付き（シグニチャあり）</div>
+<div th:include="thymeleaf-fragment::frag2(message='include',id=4)">パラメータ名付き（シグニチャなし）</div>
+<div th:include="thymeleaf-fragment::frag2" th:with="message='include',id=5">上記と同じ</div>
+
+<div th:include="thymeleaf-fragment::frag3">remove(後述)付きinclude</div>
+<div th:replace="thymeleaf-fragment::frag3">remove(後述)付きreplace</div>
+
+<h1>フラグメントの削除</h1><!-- ========================================================================================== -->
+
+<ul th:remove="all-but-first">
+    <li>Item <code>1</code> 残る</li>
+    <li>Item <code>2</code> 削除される</li>
+    <li>Item <code>3</code> 削除される</li>
+</ul>
+
+<ul>
+    <li th:remove="null">Item <code>4</code> 残る</li>
+    <li th:remove="none">Item <code>5</code> 残る</li>
+    <li th:remove="body">Item <code>6</code> タグの子要素は削除される</li>
+    <li th:remove="all">Item <code>7</code> タグごと削除される</li>
+</ul>
+
+<a href="thymeleaf-snippet.html" th:remove="tag">Item <code>8</code> タグが削除される</a>
+
+<h1>コメント</h1><!-- ========================================================================================== -->
+
+<!-- HTMLのコメント -->
+<!--/* パース時に削除されるコメント */-->
+<!--/*--> 静的に表示する時のみ表示される（パース時に削除されるコメントの応用）<!--*/-->
+<!--/*/ 静的に表示する場合はコメント、テンプレートとして実行された時は表示される /*/-->
+
+<table>
+    <!--/*/ <th:block th:each="e : ${map}"> /*/-->
+    <tr><td th:text="${e.key}"></td></tr>
+    <tr><td th:text="${e.value}"></td></tr>
+    <!--/*/ </th:block> /*/-->
+</table>
+
+<h1>インライン</h1><!-- ========================================================================================== -->
+
+<div th:inline="text">
+    <span>[[${keyword}]]</span>
+</div>
+
+<script th:inline="javascript">
+    var a = /*[[${user.name}]]*/ 'User Name';
+    var b = /*[[${list}]]*/ [0, 0, 0];
+    var c = /*[[${map}]]*/ {'a': 'AAA', 'b': 'BBB', 'c': 'CCC'};
+    /*[+
+    var d = '静的に表示する場合はコメント、テンプレートとして実行した時は有効になる';
+    +]*/
+    /*[- */
+    var e = '静的に表示する時のみ有効（パース時に削除される）';
+    /* -]*/
+</script>
+
+<h1>ユーティリティオブジェクト</h1><!-- ========================================================================================== -->
+
+<h3>#messages (org.thymeleaf.expression.Messages)</h3>
+
+<ol>
+    <li th:text="${#messages.msgOrNull('string.nothing')}">メッセージが見つからない場合</li>
+    <li th:text="${#messages.msgOrNull('string.hello')}">メッセージが見つかる場合</li>
+    <li th:text="${#messages.msgOrNull('string.welcome',user.name)}">パラメータ1つ</li>
+    <li th:text="${#messages.msgOrNull('string.and2',user.name,'Jiro')}">パラメータ2つ</li>
+    <li th:text="${#messages.msgOrNull('string.and3',user.name,'Jiro','Saburo')}">パラメータ3つ</li>
+    <li th:text="${#messages.msgOrNullWithParams('string.and4',new Object[] {user.name,'Joro','Saburo','Shiro'})}">パラメータ4つ以上</li>
+    <li>msgOrNullと同様のarrayMsgOrNull,listMegOrNull,setMsgOrNullを使うことができる</li>
+    <li>上記の全てにおいて、OrNullを取り除いたメソッドが存在する（メッセージ式と同等のため省略）</li>
+</ol>
+
+<h3>#ids (org.thymeleaf.expression.Ids)</h3>
+
+<table>
+    <tr th:each="e : ${map}">
+        <td th:text="${#ids.seq('no-')}">1,2,3,...を末尾に加えた値を生成する</td>
+        <td th:text="${#ids.prev('no-')}">前のseqの値</td>
+        <td th:text="${#ids.next('no-')}">次のseqの値</td>
+    </tr>
+</table>
+
+<h3>#dates (org.thymeleaf.expression.Dates)</h3>
+
+<ol th:with="date=${#dates.createNow()}">
+    <li th:text="${#dates.format(date)}">標準ロケールでフォーマット</li>
+    <li th:text="${#dates.formatISO(date)}">ISO8601フォーマット</li>
+    <li th:text="${#dates.format(date, 'yyyy/MM/dd HH:mm:ss.uuu')}">指定したパターンでフォーマット</li>
+    <li th:text="${#dates.year(date)}">年</li>
+    <li th:text="${#dates.month(date)}">月（数値）</li>
+    <li th:text="${#dates.monthName(date)}">月（名前）</li>
+    <li th:text="${#dates.monthNameShort(date)}">月（名前省略形）</li>
+    <li th:text="${#dates.day(date)}">日</li>
+    <li th:text="${#dates.dayOfWeek(date)}">曜日（数値）</li>
+    <li th:text="${#dates.dayOfWeekName(date)}">曜日（名前）</li>
+    <li th:text="${#dates.dayOfWeekNameShort(date)}">曜日（名前省略形）</li>
+    <li th:text="${#dates.hour(date)}">時</li>
+    <li th:text="${#dates.minute(date)}">分</li>
+    <li th:text="${#dates.second(date)}">秒</li>
+    <li th:text="${#dates.millisecond(date)}">ミリ秒</li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayFormat, listFormat, setFormat) を使うことができる</li>
+</ol>
+
+<ol>
+    <li th:with="date=${#dates.createToday()}" th:text="${#dates.format(date)}">現在日付（時分秒ミリ秒は全て0）</li>
+    <li th:with="date=${#dates.create(2016,9,6)}" th:text="${#dates.format(date)}">指定日付（時分秒ミリ秒は全て0）</li>
+    <li th:with="date=${#dates.create(2016,9,6,9,6)}" th:text="${#dates.format(date)}">指定時刻（秒ミリ秒は全て0）</li>
+    <li th:with="date=${#dates.create(2016,9,6,9,6,29)}" th:text="${#dates.format(date)}">指定時刻（ミリ秒は全て0）</li>
+    <li th:with="date=${#dates.create(2016,9,6,9,6,29,117)}" th:text="${#dates.format(date)}">指定時刻</li>
+</ol>
+
+<h3>#calendars (org.thymeleaf.expression.Calendars)</h3>
+
+<ol th:with="date=${#calendars.createNow()}">
+    <li th:text="${#calendars.format(date)}">標準ロケールでフォーマット</li>
+    <li th:text="${#calendars.formatISO(date)}">ISO8601フォーマット</li>
+    <li th:text="${#calendars.format(date, 'yyyy/MM/dd HH:mm:ss.uuu')}">指定したパターンでフォーマット</li>
+    <li th:text="${#calendars.year(date)}">年</li>
+    <li th:text="${#calendars.month(date)}">月（数値）</li>
+    <li th:text="${#calendars.monthName(date)}">月（名前）</li>
+    <li th:text="${#calendars.monthNameShort(date)}">月（名前省略形）</li>
+    <li th:text="${#calendars.day(date)}">日</li>
+    <li th:text="${#calendars.dayOfWeek(date)}">曜日（数値）</li>
+    <li th:text="${#calendars.dayOfWeekName(date)}">曜日（名前）</li>
+    <li th:text="${#calendars.dayOfWeekNameShort(date)}">曜日（名前省略形）</li>
+    <li th:text="${#calendars.hour(date)}">時</li>
+    <li th:text="${#calendars.minute(date)}">分</li>
+    <li th:text="${#calendars.second(date)}">秒</li>
+    <li th:text="${#calendars.millisecond(date)}">ミリ秒</li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayFormat, listFormat, setFormat) を使うことができる</li>
+</ol>
+
+<ol>
+    <li th:with="date=${#calendars.createToday()}" th:text="${#calendars.format(date)}">現在日付（時分秒ミリ秒は全て0）</li>
+    <li th:with="date=${#calendars.create(2016,9,6)}" th:text="${#calendars.format(date)}">指定日付（時分秒ミリ秒は全て0）</li>
+    <li th:with="date=${#calendars.create(2016,9,6,9,6)}" th:text="${#calendars.format(date)}">指定時刻（秒ミリ秒は全て0）</li>
+    <li th:with="date=${#calendars.create(2016,9,6,9,6,29)}" th:text="${#calendars.format(date)}">指定時刻（ミリ秒は全て0）</li>
+    <li th:with="date=${#calendars.create(2016,9,6,9,6,29,117)}" th:text="${#calendars.format(date)}">指定時刻</li>
+</ol>
+
+<h3>#numbers (org.thymeleaf.expression.Numbers)</h3>
+
+<ol th:with="num=3">
+    <li th:text="${#numbers.formatInteger(num,7)}">整数の最小桁数指定（0埋め）</li>
+    <li th:text="${#numbers.formatInteger(num,7,'POINT')}">整数の最小桁数と千の桁の区切り指定（.）</li>
+    <li th:text="${#numbers.formatInteger(num,7,'COMMA')}">整数の最小桁数と千の桁の区切り指定（,）</li>
+    <li th:text="${#numbers.formatInteger(num,7,'WHITESPACE')}">整数の最小桁数と千の桁の区切り指定（ ）</li>
+    <li th:text="${#numbers.formatInteger(num,7,'NONE')}">整数の最小桁数と千の桁の区切り指定（なし）</li>
+    <li th:text="${#numbers.formatInteger(num,7,'DEFAULT')}">整数の最小桁数と千の桁の区切り指定（ロケール依存）</li>
+    <li>上記の全てにおいて、arrayFormatInteger, listFormatInteger, setFormatInteger を使うことができる</li>
+</ol>
+
+<ol th:with="num=3.14">
+    <li th:text="${#numbers.formatDecimal(num,7,2)}">数値の最小桁数、小数桁数指定（0埋め）</li>
+    <li th:text="${#numbers.formatDecimal(num,7,2,'DEFAULT')}">数値の最小桁数、小数桁数、小数点指定（文字はformatInteger同様）</li>
+    <li th:text="${#numbers.formatDecimal(num,7,'DEFAULT',2,'DEFAULT')}">数値の最小桁数、千の桁の区切り、小数桁数、小数点指定（文字はformatInteger同様）</li>
+    <li>上記の全てにおいて、arrayFormatDecimal, listFormatDecimal, setFormatDecimal を使うことができる</li>
+</ol>
+
+<ol>
+    <li th:text="${#numbers.formatDecimal(3.14,0,1)}">3.1に丸め</li>
+    <li th:text="${#numbers.formatDecimal(3.15,0,1)}">3.1に丸め</li>
+    <li th:text="${#numbers.formatDecimal(3.16,0,1)}">3.2に丸め</li>
+    <li><span th:each="n : ${#numbers.sequence(1,10)}" th:text="${n}">from,toでシーケンスを生成</span></li>
+    <li><span th:each="n : ${#numbers.sequence(1,10,2)}" th:text="${n}">from,to,stepでシーケンスを生成</span></li>
+</ol>
+
+<h3>#strings (org.thymeleaf.expression.Strings)</h3>
+
+<ol>
+    <li th:text="${#strings.isEmpty(null)}">空か？（true）</li>
+    <li th:text="${#strings.isEmpty('')}">空か？（true）</li>
+    <li th:text="${#strings.isEmpty(' ')}">空か？（true、チェック前にtrim()）</li>
+    <li th:text="${#strings.defaultString(' ','default')}">isEmpty == false ならばデフォルト文字列</li>
+    <li th:text="${#strings.containsIgnoreCase('Thymeleaf','thyme')}">含まれるか？（true）</li>
+    <li th:text="${#strings.substringAfter('Thymeleaf','Thyme')}">指定した文字列以降の部分文字列（leaf）</li>
+    <li th:text="${#strings.substringBefore('Thymeleaf','leaf')}">指定した文字列以前の部分文字列（Thyme）</li>
+    <li th:text="${#strings.abbreviate('Thymeleaf',8)}">指定した文字数に収める（上限を超える場合は最後の3文字を...に置換）</li>
+    <li th:text="${#strings.capitalize('thymeLeaf')}">先頭文字を大文字に置換</li>
+    <li th:text="${#strings.unCapitalize('ThymeLeaf')}">先頭文字を小文字に置換</li>
+    <li th:text="${#strings.capitalizeWords('i can fly')}">単語の先頭文字を大文字に置換</li>
+    <li th:text="${#strings.capitalizeWords('capitalize','i')}">単語の先頭文字を大文字に置換（区切り文字指定）</li>
+    <li th:text="${#strings.escapeXml(tag)}">XMLエスケープ</li>
+    <li th:text="${#strings.escapeJava(java)}">Javaエスケープ</li>
+    <li th:text="${#strings.unescapeJava(#strings.escapeJava(java))}">Javaアンエスケープ</li>
+    <li th:text="${#strings.escapeJavaScript(javascript)}">JavaScriptエスケープ</li>
+    <li th:text="${#strings.unescapeJavaScript(#strings.escapeJavaScript(javascript))}">JavaScriptアンエスケープ</li>
+    <li>${#strings.method(string,...)} に対応する ${string.method(...)} があるため省略 : <br/>
+        toString(String), contains(String,String), startsWith(String,String), indexOf(String,String),
+        substring(String,Int,Int), replace(String,String,String), prepend(String,String), append(String,String),
+        toUpperCase(String), toLowerCase(String), trim(String), length(String)
+    </li>
+    <li>上記の全てにおいて、array*, list*, set* (例：arrayIsEmpty, listIsEmpty, setIsEmpty) を使うことができる</li>
+</ol>
+
+<ol>
+    <li th:text="${#strings.equals('thymeleaf',null)}">'thymeleaf' == null と同じ？</li>
+    <li th:text="${#strings.equalsIgnoreCase('Thymeleaf','thymeleaf')}">大文字と小文字を無視して比較</li>
+    <li th:text="${#strings.concat('Hello ','Thyme','leaf',' World')}">結合</li>
+    <li th:text="${#strings.concatReplaceNulls('oh!',1,2,null,4,5,null)}">nullの要素を第1引数で置き換えて結合</li>
+    <li th:text="${#strings.randomAlphanumeric(8)}">指定した文字数で適当な英数文字列を生成</li>
+    <li><span th:each="s : ${#strings.arraySplit('1,2,1,2',',')}" th:text="${s}">指定文字で分割して String[]</span></li>
+    <li><span th:each="s : ${#strings.listSplit('3,4,3,4',',')}" th:text="${s}">指定文字で分割して List&lt;String&gt;</span></li>
+    <li><span th:each="s : ${#strings.setSplit('5,6,5,6',',')}" th:text="${s}">指定文字で分割して Set&lt;String&gt;</span></li>
+    <li th:with="array=${#strings.arraySplit('1,2,1,2',',')}" th:text="${#strings.arrayJoin(array,'|')}">区切り文字を指定して結合</li>
+    <li th:with="list=${#strings.listSplit('3,4,3,4,',',')}" th:text="${#strings.listJoin(list,'|')}">区切り文字を指定して結合</li>
+    <li th:with="set=${#strings.setSplit('5,6,5,6,',',')}" th:text="${#strings.setJoin(set,'|')}">区切り文字を指定して結合</li>
+</ol>
+
+<h3>#bools</h3>
+
+<ol>
+    <li th:text="${#bools.listAnd(list)}">各要素を真偽値として評価してand</li>
+    <li th:text="${#bools.listOr(list)}">各要素を真偽値として評価してor</li>
+</ol>
+
+<ol>
+    <li th:text="${#bools.isTrue(1)}">オブジェクトはtrueと評価されるか？</li>
+    <li th:text="${#bools.isTrue(0)}">オブジェクトはtrueと評価されるか？</li>
+    <li th:text="${#bools.isTrue(null)}">オブジェクトはtrueと評価されるか？</li>
+    <li th:text="${#bools.isFalse(1)}">オブジェクトはfalseと評価されるか？</li>
+    <li th:text="${#bools.isFalse(0)}">オブジェクトはfalseと評価されるか？</li>
+    <li th:text="${#bools.isFalse(null)}">オブジェクトはfalseと評価されるか？</li>
+    <li>上記の全てにおいて、array*, list*, set* を使うことができる</li>
+    <li>true/false の評価基準は条件分岐を参照</li>
+</ol>
+
+<h3>#arrays, #lists, #sets, #maps</h3>
+
+<ol>
+    <li th:each="i : ${#lists.sort(list)}" th:text="${i}">昇順で整列</li>
+    <li th:each="i : ${#lists.sort(list,comparator)}" th:text="${i}">指定したcomparatorで整列</li>
+</ol>
+
+<ol>
+    <li>#arrays.length, #lists.size, #sets.size, #maps.size</li>
+    <li>#arrays.isEmpty, #lists.isEmpty, #sets.isEmpty, #maps.isEmpty</li>
+    <li>#arrays.contains, #lists.contains, #sets.contains, #maps.containsKey, #maps.containsValue</li>
+    <li>#arrays.containsAll, #lists.containsAll, #sets.containsAll, #maps.containsAllKeys, #maps.containsAllValues</li>
+</ol>
+
+<ol>
+    <li>#arrays : toArray, toStringArray, toIntegerArray, toLongArray, toDoubleArray, toFloatArray, toBooleanArray</li>
+    <li>#lists : toList</li>
+    <li>#sets : toSet</li>
+</ol>
+
+<h3>#aggregates (org.thymeleaf.expression.Aggregates)</h3>
+
+<ol>
+    <li th:text="${#aggregates.sum(list)}">合計</li>
+    <li th:text="${#aggregates.avg(list)}">平均</li>
+</ol>
+
+<h3>#objects (org.thymeleaf.expression.Objects)</h3>
+
+<ol>
+    <li th:text="${#objects.nullSafe(2016,0)}">?: と同等</li>
+    <li th:text="${#objects.nullSafe(null,0)}">?: と同等</li>
+    <li>各要素に nullSafe を適用する arrayNullSafe, listNullSafe, setNullSafe を使うことができる</li>
+</ol>
+
+<h1>優先順位</h1><!-- ========================================================================================== -->
+
+<table>
+    <tr>
+        <th>順番</th>
+        <th>機能</th>
+        <th>属性</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>フラグメントのインクルード</td>
+        <td><code>include</code>, <code>replace</code></td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>フラグメントの繰り返し</td>
+        <td><code>each</code></td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>条件の評価</td>
+        <td><code>if</code>, <code>unless</code>, <code>switch</code>, <code>case</code></td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>ローカル変数の定義</td>
+        <td><code>object</code>, <code>with</code></td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>一般的な属性の変更</td>
+        <td><code>attr</code>, <code>attrprepend</code>, <code>attrappend</code></td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>特定の属性の変更</td>
+        <td><code>value</code>, <code>href</code>, <code>src</code>, ...</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>タグボディの変更</td>
+        <td><code>text</code>, <code>utext</code></td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>フラグメントの定義</td>
+        <td><code>fragment</code></td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>フラグメントの削除</td>
+        <td><code>remove</code></td>
+    </tr>
+</table>
+
+</body>
+</html>

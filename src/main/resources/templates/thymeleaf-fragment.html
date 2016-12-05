@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thymeleaf Fragment</title>
+</head>
+<body>
+
+<footer th:fragment="frag1(id,message)" th:assert="${id} gt 0">
+    <span th:text="|${id} ${message}|">シグニチャあり</span>
+</footer>
+
+<footer th:fragment="frag2">
+    <span th:text="|${id} ${message}|">シグニチャなし</span>
+</footer>
+
+<div th:fragment="frag3" th:remove="tag">
+    <span>タグを除去</span>
+</div>
+
+<footer id="footer">
+    Footer
+</footer>
+
+</body>
+</html>
