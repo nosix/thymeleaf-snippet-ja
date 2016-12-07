@@ -9,9 +9,7 @@ import java.util.*
 class ThymeleafSnippetController {
 
     data class Address(val zipCode: String, val city: String)
-    data class User(val name: String, val age: Int, val address: Address, val isEnabled: Boolean) {
-        //fun getIsEnabled() = isEnabled // テンプレートで isEnabled を参照するときに必要
-    }
+    data class User(val name: String, val age: Int, val address: Address, val isEnabled: Boolean)
 
     @ModelAttribute("property")
     fun populateProperty() = "age"

@@ -101,7 +101,7 @@
     <li th:text="${map.jp}">マップの要素</li>
     <li th:text="${map['jp']}">マップの要素</li>
     <li th:text="${list.contains(4)}">メソッド呼び出し</li>
-    <!--/* <li th:text="${user.isEnabled}">isXxxはエラーになる</li> */-->
+    <li th:text="${user.enabled}">isで始まるプロパティはisを書かない(isEnabledはエラー)</li>
 </ol>
 
 <h2>選択変数式（アスタリスク構文）</h2>
